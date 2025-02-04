@@ -1,0 +1,74 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Grid Layout */
+.container {
+  display: grid;
+  gap: 20px;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Main Carousel */
+.carousel {
+  background: #222;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Align One Piece & Solo Leveling Side by Side */
+.carousels-wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.onepiece-box,
+.sololeveling-box {
+  flex: 1;
+  text-align: center;
+}
+
+/* Titles */
+.drop-zone span {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Buttons */
+button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Images */
+img {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}

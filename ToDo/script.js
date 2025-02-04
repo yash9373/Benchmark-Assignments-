@@ -1,85 +1,94 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const inputTodo = document.getElementById("input-todo");
-  const buttonTodo = document.getElementById("button-todo");
-  const ulTodo = document.getElementById("ul-todo");
-  const deleteAllBtn = document.getElementById("delete-all-btn");
+function addTodo() {
+  const inputField = document.getElementById("input-todo");
+  const text = inputField.value.trim(); // Get value & remove extra spaces
+  if (text === "") return; // Prevent adding empty tasks
 
-  let editMode = false;
-  let editElement = null;
+  const ultodo = document.getElementById("ul-todo");
+  const newTask = document.createElement("li");
+  newTask.className =
+    "list-group-item d-flex justify-content-between align-items-start";
+  newTask.innerHTML = `
+      <span class="text-todo">${text}</span>
+      <button type="button" class="btn btn-success">Edit</button>
+      <button type="button" class="btn btn-danger">Delete</button>
+    `;
 
-  // Function to Create a Todo Item
-  const createTodo = (task) => {
-    const li = document.createElement("li");
-    li.className =
-      "list-group-item d-flex justify-content-between align-items-start";
-    li.innerHTML = `
-        <span class="text-todo">${task}</span>
-        <div class="btn-group" role="group">
-          <button type="button" class="btn btn-danger btn-edit">Edit</button>
-          <button type="button" class="btn btn-warning btn-delete">Delete</button>
-        </div>`;
+  const editbtn = newTask.querySelector(".btn-success");
+  const deletebtn = newTask.querySelector(".btn-danger");
 
-    ulTodo.appendChild(li);
-  };
+  editbtn.addEventListener("click", () => {
+    const currentText = newTask.querySelector(".text-todo").textContent;
+    const inputEdit = document.createElement("input");
+    inputEdit.type = "text";
+    inputEdit.className = "form-control";
+    inputEdit.value = currentText;
 
-  // Function to Add or Update a Task
-  buttonTodo.addEventListener("click", () => {
-    const text = inputTodo.value.trim();
-    if (text === "") return;
+    newTask.innerHTML = "";
+    newTask.appendChild(inputEdit);
 
-    if (editMode) {
-      editElement.querySelector(".text-todo").textContent = text;
-      editMode = false;
-      editElement = null;
-      buttonTodo.textContent = "Add";
-    } else {
-      createTodo(text);
-    }
-    inputTodo.value = "";
-    saveAllTodos();
+    // Add save button
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "btn btn-primary";
+    saveBtn.textContent = "Save";
+    newTask.appendChild(saveBtn);
+
+    saveBtn.addEventListener("click", () => {
+      newTask.innerHTML = `
+          <span class="text-todo">${inputEdit.value}</span>
+          <button type="button" class="btn btn-success">Edit</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        `;
+      addEventListeners(newTask);
+    });
   });
 
-  // Function to Handle Task Actions (Edit & Delete)
-  ulTodo.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btn-delete")) {
-      e.target.closest(".list-group-item").remove();
-      saveAllTodos();
-    }
-
-    if (e.target.classList.contains("btn-edit")) {
-      const li = e.target.closest(".list-group-item");
-      const taskText = li.querySelector(".text-todo").textContent;
-
-      inputTodo.value = taskText;
-      buttonTodo.textContent = "Update";
-
-      editElement = li;
-      editMode = true;
-    }
+  deletebtn.addEventListener("click", () => {
+    ultodo.removeChild(newTask);
   });
 
-  // Function to Delete All Tasks with Confirmation
-  deleteAllBtn.addEventListener("click", () => {
-    if (confirm("Are you sure you want to delete all tasks?")) {
-      ulTodo.innerHTML = "";
-      saveAllTodos();
-    }
+  ultodo.appendChild(newTask);
+  inputField.value = ""; // Clear input field after adding
+}
+
+function addEventListeners(task) {
+  const editbtn = task.querySelector(".btn-success");
+  const deletebtn = task.querySelector(".btn-danger");
+
+  editbtn.addEventListener("click", () => {
+    const currentText = task.querySelector(".text-todo").textContent;
+    const inputEdit = document.createElement("input");
+    inputEdit.type = "text";
+    inputEdit.className = "form-control";
+    inputEdit.value = currentText;
+
+    task.innerHTML = "";
+    task.appendChild(inputEdit);
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "btn btn-primary";
+    saveBtn.textContent = "Save";
+    task.appendChild(saveBtn);
+
+    saveBtn.addEventListener("click", () => {
+      task.innerHTML = `
+          <span class="text-todo">${inputEdit.value}</span>
+          <button type="button" class="btn btn-success">Edit</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        `;
+      addEventListeners(task);
+    });
   });
 
-  // Function to Save Todos to Local Storage
-  const saveAllTodos = () => {
-    const allTodos = [...document.querySelectorAll(".text-todo")].map(
-      (task) => task.textContent
-    );
-    localStorage.setItem("allTodos", JSON.stringify(allTodos));
-  };
+  deletebtn.addEventListener("click", () => {
+    task.parentNode.removeChild(task);
+  });
+}
+const ctd = document.getElementById("delete-all-btn");
 
-  // Function to Load Todos from Local Storage
-  const loadAllTodos = () => {
-    const allTodos = JSON.parse(localStorage.getItem("allTodos")) || [];
-    allTodos.forEach((task) => createTodo(task));
-  };
-
-  // Load Todos when Page Loads
-  loadAllTodos();
+ctd.addEventListener("click", () => {
+  const dltAll = document.querySelectorAll("li"); // Selects all <li> elements
+  dltAll.forEach((item) => item.remove()); // Loop through and remove each one
 });
+
+const add = document.getElementById("button-todo");
+add.addEventListener("click", addTodo);
