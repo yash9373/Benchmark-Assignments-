@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Rental</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .form-container {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Vehicle Rental System</h2>
+
+    <div class="form-container">
+      <label for="vehicleType">Select Vehicle Type:</label>
+      <select id="vehicleType">
+        <option value="Car">Car</option>
+        <option value="Bike">Bike</option>
+        <option value="Truck">Truck</option></select
+      ><br /><br />
+
+      <label for="brand">Brand:</label>
+      <input type="text" id="brand" required /><br /><br />
+
+      <label for="model">Model:</label>
+      <input type="text" id="model" required /><br /><br />
+
+      <label for="rentPrice">Rent Price Per Day:</label>
+      <input type="number" id="rentPrice" required /><br /><br />
+
+      <label for="days">Number of Days:</label>
+      <input type="number" id="days" required /><br /><br />
+
+      <button onclick="calculate()">Calculate Rental Cost</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+      class Vehicle {
+        constructor(brand, model, rentPricePerDay) {
+          this.brand = brand;
+          this.model = model;
+          this.rentPricePerDay = rentPricePerDay;
+        }
+
+        calculateRentalCost(days) {
+          return this.rentPricePerDay * days;
+        }
+      }
+
+      class Car extends Vehicle {
+        constructor(brand, model, rentPricePerDay) {
+          super(brand, model, rentPricePerDay);
+        }
+
+        calculateRentalCost(days) {
+          let baseCost = super.calculateRentalCost(days);
+          return baseCost + baseCost * 0.1; // Add 10% for car insurance
+        }
+      }
+
+      class Bike extends Vehicle {
+        constructor(brand, model, rentPricePerDay) {
+          super(brand, model, rentPricePerDay);
+        }
+
+        calculateRentalCost(days) {
+          let baseCost = super.calculateRentalCost(days);
+          return baseCost - baseCost * 0.05; // Discount of 5% for bikes
+        }
+      }
+
+      class Truck extends Vehicle {
+        constructor(brand, model, rentPricePerDay) {
+          super(brand, model, rentPricePerDay);
+        }
+
+        calculateRentalCost(days) {
+          let baseCost = super.calculateRentalCost(days);
+          return baseCost + baseCost * 0.2; // Add 20% for truck insurance
+        }
+      }
+
+      function calculate() {
+        let vehicleType = document.getElementById("vehicleType").value;
+        let brand = document.getElementById("brand").value;
+        let model = document.getElementById("model").value;
+        let rentPrice = parseFloat(document.getElementById("rentPrice").value);
+        let days = parseInt(document.getElementById("days").value);
+
+        let vehicle;
+
+        if (vehicleType === "Car") {
+          vehicle = new Car(brand, model, rentPrice);
+        } else if (vehicleType === "Bike") {
+          vehicle = new Bike(brand, model, rentPrice);
+        } else if (vehicleType === "Truck") {
+          vehicle = new Truck(brand, model, rentPrice);
+        }
+
+        let rentalCost = vehicle.calculateRentalCost(days);
+
+        document.getElementById(
+          "result"
+        ).innerHTML = `Total rental cost for ${vehicleType} (${brand} ${model}) for ${days} days: $${rentalCost.toFixed(
+          2
+        )}`;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment System</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .form-container {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Payment System</h2>
+
+    <!-- Form to input payment details -->
+    <div class="form-container">
+      <label for="paymentType">Select Payment Method:</label>
+      <select id="paymentType">
+        <option value="CreditCard">Credit Card</option>
+        <option value="PayPal">PayPal</option>
+        <option value="Crypto">Crypto</option></select
+      ><br /><br />
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" required /><br /><br />
+
+      <label for="date">Payment Date:</label>
+      <input type="date" id="date" required /><br /><br />
+
+      <div id="creditCardDetails" style="display: none">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" /><br /><br />
+      </div>
+
+      <div id="paypalDetails" style="display: none">
+        <label for="email">PayPal Email:</label>
+        <input type="email" id="email" /><br /><br />
+      </div>
+
+      <div id="cryptoDetails" style="display: none">
+        <label for="cryptoAddress">Crypto Address:</label>
+        <input type="text" id="cryptoAddress" /><br /><br />
+      </div>
+
+      <button onclick="processPayment()">Process Payment</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+      class Payment {
+        constructor(amount, date) {
+          this.amount = amount;
+          this.date = date;
+        }
+
+        processPayment() {
+          throw new Error(
+            "Method 'processPayment' must be implemented in subclass"
+          );
+        }
+      }
+
+      class CreditCardPayment extends Payment {
+        constructor(amount, date, cardNumber) {
+          super(amount, date);
+          this.cardNumber = cardNumber;
+        }
+
+        #cardNumber;
+        processPayment() {
+          return `Payment of $${this.amount} processed via Credit Card on ${this.date}`;
+        }
+
+        getCardNumber() {
+          return "**** **** **** " + this.cardNumber.slice(-4);
+        }
+      }
+
+      class PayPalPayment extends Payment {
+        constructor(amount, date, email) {
+          super(amount, date);
+          this.email = email;
+        }
+
+        processPayment() {
+          return `Payment of $${this.amount} processed via PayPal from ${this.email} on ${this.date}`;
+        }
+      }
+
+      class CryptoPayment extends Payment {
+        constructor(amount, date, cryptoAddress) {
+          super(amount, date);
+          this.cryptoAddress = cryptoAddress;
+        }
+
+        processPayment() {
+          return `Payment of $${this.amount} processed via Crypto at address ${this.cryptoAddress} on ${this.date}`;
+        }
+      }
+
+      function processPayment() {
+        let paymentType = document.getElementById("paymentType").value;
+        let amount = parseFloat(document.getElementById("amount").value);
+        let date = document.getElementById("date").value;
+
+        let payment;
+
+        if (paymentType === "CreditCard") {
+          let cardNumber = document.getElementById("cardNumber").value;
+          payment = new CreditCardPayment(amount, date, cardNumber);
+        } else if (paymentType === "PayPal") {
+          let email = document.getElementById("email").value;
+          payment = new PayPalPayment(amount, date, email);
+        } else if (paymentType === "Crypto") {
+          let cryptoAddress = document.getElementById("cryptoAddress").value;
+          payment = new CryptoPayment(amount, date, cryptoAddress);
+        }
+
+        let paymentResult = payment.processPayment();
+        document.getElementById("result").innerHTML = paymentResult;
+      }
+
+      document
+        .getElementById("paymentType")
+        .addEventListener("change", function () {
+          let paymentType = this.value;
+
+          document.getElementById("creditCardDetails").style.display = "none";
+          document.getElementById("paypalDetails").style.display = "none";
+          document.getElementById("cryptoDetails").style.display = "none";
+
+          if (paymentType === "CreditCard") {
+            document.getElementById("creditCardDetails").style.display =
+              "block";
+          } else if (paymentType === "PayPal") {
+            document.getElementById("paypalDetails").style.display = "block";
+          } else if (paymentType === "Crypto") {
+            document.getElementById("cryptoDetails").style.display = "block";
+          }
+        });
+
+      document.getElementById("paymentType").dispatchEvent(new Event("change"));
+    </script>
+  </body>
+</html>
