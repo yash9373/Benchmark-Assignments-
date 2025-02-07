@@ -12,7 +12,7 @@ function removeBook(title) {
 
 function getBooksByAuthor(auther) {
   return bookLibrary.books.find((book) => book.auther === auther);
-}
+}   
 
 function getAllbooks() {
   return bookLibrary.books;
