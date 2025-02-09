@@ -3,20 +3,26 @@ import CartServises from "../src/cartServises.js";
 import getData from "../src/getData.js";
 import cart from "../src/cart.js";
 import Checkout from "../src/checkOut.js";
+import ViewProduct from "../src/viewProduct.js";
 document.addEventListener("DOMContentLoaded", () => {
   Product.renderProducts();
 });
-// Use event delegation on .product-grid
 document.querySelector(".product-grid").addEventListener("click", (event) => {
-  if (event.target.classList.contains("add-to-cart")) {
-    console.log("Button clicked:", event.target);
+  const action = event.target.getAttribute("data-action");
+
+  if (action === "add-to-cart") {
     const productCard = event.target.closest(".product-card");
     const productTitle = productCard.querySelector("h3").textContent;
     const productPrice = productCard.querySelector(".price").textContent;
     const productImage = productCard.querySelector(".product-image").src;
-
     const newCart = new cart(productTitle, productPrice, productImage);
     CartServises.addProduct(newCart);
+  }
+
+  if (action === "view-product") {
+    const productCard = event.target.closest(".product-card");
+    const productTitle = productCard.querySelector("h3").textContent;
+    ViewProduct.displayProduct(productTitle);
   }
 });
 

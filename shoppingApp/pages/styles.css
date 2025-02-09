@@ -488,3 +488,205 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
 }
+.product-page {
+  display: flex;
+  gap: 40px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+  background: #fff;
+}
+
+/* Left Section - Product Image */
+.product-image-container {
+  flex: 1;
+  text-align: center;
+}
+
+.product-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Zoom Effect */
+.product-image:hover {
+  transform: scale(1.1);
+}
+
+/* Right Section - Product Details */
+.product-details {
+  flex: 1;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
+
+.brand {
+  font-size: 16px;
+  color: #555;
+}
+
+.brand span {
+  font-weight: bold;
+  color: #007185;
+}
+
+/* Price Section */
+.price-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.price {
+  font-size: 26px;
+  font-weight: bold;
+  color: #b12704;
+}
+
+.discount {
+  background: #ffd814;
+  color: #111;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Stock Status */
+.in-stock {
+  color: #008a00;
+  font-weight: bold;
+}
+
+.out-of-stock {
+  color: red;
+  font-weight: bold;
+}
+
+/* Delivery Information */
+.delivery-info {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #333;
+}
+
+.delivery-info p {
+  margin: 5px 0;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.buy-now,
+.add-to-cart {
+  flex: 1;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.buy-now {
+  background: #ffa41c;
+  color: white;
+}
+
+.buy-now:hover {
+  background: #e69500;
+}
+
+.add-to-cart {
+  background: #ffd814;
+  color: #333;
+}
+
+.add-to-cart:hover {
+  background: #f7ca00;
+}
+
+/* Back Button */
+.back-to-products {
+  display: block;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  background: #37475a;
+  color: white;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back-to-products:hover {
+  background: #222f3d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-page {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .product-image {
+    max-width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+}
+/* General Styling for View Product Button */
+.view-product {
+  background-color: #ff9900; /* A vibrant orange color */
+  color: white;
+  border: 2px solid #ff9900; /* Border to match the background */
+  padding: 12px 20px; /* Spacious padding */
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase; /* Make text uppercase */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  display: inline-block;
+  text-align: center;
+  width: 100%; /* Make the button span the width of the container */
+  box-sizing: border-box;
+}
+
+/* Hover Effect */
+.view-product:hover {
+  background-color: #e68900; /* Darken the button when hovered */
+  border-color: #e68900; /* Make border match the hover background */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Focus Effect */
+.view-product:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(255, 153, 0, 0.6); /* Glow effect for focus */
+}
+
+/* Disabled State */
+.view-product:disabled {
+  background-color: #e0e0e0; /* Light grey */
+  color: #888;
+  cursor: not-allowed; /* Indicate that it's not clickable */
+  border: 2px solid #e0e0e0; /* Match border with background */
+}
