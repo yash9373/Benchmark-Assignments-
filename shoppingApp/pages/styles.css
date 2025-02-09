@@ -382,3 +382,109 @@ h2 {
     align-self: flex-end; /* Align close button to the right in larger screens */
   }
 }
+
+/* Navbar Styles */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #333; /* Dark background for the navbar */
+  color: white;
+  padding: 10px 20px;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+  align-items: center;
+  margin: 10px;
+}
+
+.logo h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 1rem;
+  width: 200px;
+}
+
+.search-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Styling the rest of the content */
+.container {
+  display: flex;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.cart-section {
+  width: 300px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-items {
+  margin-top: 15px;
+}
+
+.cart-items ul {
+  padding: 0;
+  list-style: none;
+}
+
+.checkout-btn {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.checkout-btn:hover {
+  background-color: #2980b9;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding-left: 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}

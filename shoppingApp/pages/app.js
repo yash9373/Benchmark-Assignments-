@@ -35,3 +35,16 @@ document.querySelector(".checkout-btn").addEventListener("click", () => {
   }
   Checkout.showCheckoutModal();
 });
+document.querySelector(".search-btn").addEventListener("click", () => {
+  const searchTerm = document.querySelector(".search-input").value;
+  Product.searchProduct(searchTerm);
+});
+
+const lowToHigh = document.getElementById("sortlth");
+lowToHigh.addEventListener("click", () => {
+  Product.sortLowToHigh();
+});
+const highToLow = document.getElementById("sorthtl");
+highToLow.addEventListener("click", () => {
+  Product.sortHighToLow();
+});
