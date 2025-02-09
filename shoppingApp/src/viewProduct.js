@@ -54,12 +54,10 @@ class ViewProduct {
     mainContent.innerHTML = "";
     mainContent.appendChild(productElement);
 
-    // ✅ Fix: Ensure back button shows the product grid again
     document.getElementById("backToProducts").addEventListener("click", () => {
-      productElement.remove(); // Remove product details
-      productGrid.style.display = "grid"; // Show product grid
-      //product.renderProducts(); // Render products
-      mainContent.appendChild(productGrid); // Append product grid to main content
+      productElement.remove();
+      productGrid.style.display = "grid";
+      mainContent.appendChild(productGrid);
     });
   }
 }
