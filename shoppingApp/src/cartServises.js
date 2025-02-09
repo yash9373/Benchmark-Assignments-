@@ -5,8 +5,7 @@ class CartServices {
 
   static displayCart() {
     const cartContainer = document.querySelector(".cart-items");
-    cartContainer.innerHTML = ""; // Clear previous cart items
-
+    cartContainer.innerHTML = "";
     CartServices.cart.forEach((element) => {
       const productElement = document.createElement("div");
       productElement.className = "cart-item";
@@ -20,7 +19,6 @@ class CartServices {
       cartContainer.appendChild(productElement);
     });
 
-    // Update total price after displaying the cart items
     this.updateTotalPrice();
   }
 
