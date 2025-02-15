@@ -9,11 +9,13 @@ const addExpBtn = document.querySelector(
   ".add-expense-btn"
 )! as HTMLButtonElement;
 const expenseList = document.querySelector(".expense-list")! as HTMLDivElement;
-const totalAmount = document.getElementById("total-amount")! as HTMLDivElement;
+const totalExpenseAmount = document.querySelector(
+  ".total-expense-amount"
+)! as HTMLDivElement;
 const startDate = document.getElementById("startDate")! as HTMLInputElement;
 const endDate = document.getElementById("endDate")! as HTMLInputElement;
-const filterCategory = document.getElementById(
-  "filter-category"
+const filterCategory = document.querySelector(
+  ".filter #expense-category"
 )! as HTMLSelectElement;
 
 type ExpenseType = "credit" | "debit";
@@ -62,7 +64,7 @@ function updateTotalExpense() {
     .reduce((sum, exp) => sum + exp.amount, 0);
   const netBalance = totalCredit - totalDebit;
 
-  totalAmount.textContent = `$${200}`;
+  totalExpenseAmount.textContent = `$${netBalance.toFixed(2)}`;
 }
 
 function deleteExpense(id: number) {
@@ -92,7 +94,7 @@ function displayExpenses() {
 
   if (expenses.length === 0) {
     expenseList.innerHTML = `<p>No matching expenses found.</p>`;
-    totalAmount.textContent = "$0.00";
+    totalExpenseAmount.textContent = "$0.00";
     return;
   }
 
@@ -112,10 +114,10 @@ function displayExpenses() {
     expenseList.appendChild(expRow);
   });
 
-  updateTotalExpense(); // Ensure this is always called
+  updateTotalExpense();
 }
 
-// Event listener for delete buttons
+// Event Delegation for Delete Buttons
 expenseList.addEventListener("click", function (event) {
   const target = event.target as HTMLElement;
   if (target.classList.contains("delete-expense")) {
@@ -124,7 +126,6 @@ expenseList.addEventListener("click", function (event) {
   }
 });
 
-// Event listener for adding an expense
 addExpBtn.addEventListener("click", function (event) {
   event.preventDefault();
 
@@ -158,14 +159,11 @@ addExpBtn.addEventListener("click", function (event) {
   expDate.value = "";
 });
 
-// Event listeners for filters
 startDate.addEventListener("change", displayExpenses);
 endDate.addEventListener("change", displayExpenses);
 filterCategory.addEventListener("change", displayExpenses);
 
-// Load expenses on page load
 document.addEventListener("DOMContentLoaded", () => {
   displayExpenses();
   updateTotalExpense();
-  //totalAmount.textContent = "$0.00";
 });
