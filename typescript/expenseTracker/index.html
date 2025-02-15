@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <title>Expense Tracker</title>
+  </head>
+  <body>
+    <div class="ex-tracker-header">
+      Track<span style="font-weight: bolder; color: #ff5733">I</span>t
+    </div>
+    <span id="total-amount">0</span>
+
+    <div class="container">
+      <!-- Expense Form Area -->
+      <div class="ex-tracker-form-area">
+        <form>
+          <select id="expense-type">
+            <option>Select Type</option>
+            <option value="credit">Credit</option>
+            <option value="debit">Debit</option>
+          </select>
+          <input type="text" placeholder="Enter a Description" id="desc" />
+          <input type="text" placeholder="Enter an Amount" id="amount" />
+          <select id="filter-category">
+            <option>Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
+            <option value="light bill">Light Bill</option>
+            <option value="reacharge">Recharge</option>
+          </select>
+          <label for="date">Select a date:</label>
+          <input type="date" id="date" />
+          <button class="add-expense-btn">Add Expense</button>
+        </form>
+      </div>
+
+      <!-- Expense History (Initially Hidden) -->
+      <div class="expense-history">
+        <div class="filter" style="border: 1px solid black; height: 40px">
+          <input type="date" id="startDate" />
+          <input type="date" id="endDate" />
+          <select id="expense-category">
+            <option>Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
+            <option value="light bill">Light Bill</option>
+            <option value="reacharge">Recharge</option>
+          </select>
+        </div>
+        <div class="expense-list"></div>
+      </div>
+    </div>
+
+    <script src="dist/app.js"></script>
+  </body>
+</html>

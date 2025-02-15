@@ -1,29 +1,29 @@
-var Quiz = /** @class */ (function () {
-    function Quiz(questions) {
+"use strict";
+class Quiz {
+    constructor(questions) {
         this.currentIndex = 0;
         this.score = 0;
         this.questions = questions;
     }
-    Quiz.prototype.getCurrentQuestion = function () {
+    getCurrentQuestion() {
         return this.questions[this.currentIndex];
-    };
-    Quiz.prototype.checkAnswer = function (answer) {
+    }
+    checkAnswer(answer) {
         if (answer === this.getCurrentQuestion().correctAnswer) {
             this.score++;
             return true;
         }
         return false;
-    };
-    Quiz.prototype.nextQuestion = function () {
+    }
+    nextQuestion() {
         this.currentIndex++;
         return this.currentIndex < this.questions.length;
-    };
-    Quiz.prototype.getScore = function () {
+    }
+    getScore() {
         return this.score;
-    };
-    return Quiz;
-}());
-var questions = [
+    }
+}
+const questions = [
     {
         question: "What is 2 + 2?",
         choices: ["3", "4", "5", "6"],
@@ -40,20 +40,20 @@ var questions = [
         correctAnswer: "Mars",
     },
 ];
-var quiz = new Quiz(questions);
-var questionElement = document.getElementById("question");
-var choicesElement = document.getElementById("choices");
-var nextButton = document.getElementById("next-btn");
-var scoreContainer = document.getElementById("score-container");
-var scoreElement = document.getElementById("score");
+const quiz = new Quiz(questions);
+const questionElement = document.getElementById("question");
+const choicesElement = document.getElementById("choices");
+const nextButton = document.getElementById("next-btn");
+const scoreContainer = document.getElementById("score-container");
+const scoreElement = document.getElementById("score");
 function loadQuestion() {
-    var currentQuestion = quiz.getCurrentQuestion();
+    const currentQuestion = quiz.getCurrentQuestion();
     questionElement.textContent = currentQuestion.question;
     choicesElement.innerHTML = "";
-    currentQuestion.choices.forEach(function (choice) {
-        var button = document.createElement("button");
+    currentQuestion.choices.forEach((choice) => {
+        const button = document.createElement("button");
         button.textContent = choice;
-        button.addEventListener("click", function () { return selectAnswer(choice); });
+        button.addEventListener("click", () => selectAnswer(choice));
         choicesElement.appendChild(button);
     });
     nextButton.classList.add("hidden");
@@ -62,7 +62,7 @@ function selectAnswer(answer) {
     quiz.checkAnswer(answer);
     nextButton.classList.remove("hidden");
 }
-nextButton.addEventListener("click", function () {
+nextButton.addEventListener("click", () => {
     if (quiz.nextQuestion()) {
         loadQuestion();
     }
