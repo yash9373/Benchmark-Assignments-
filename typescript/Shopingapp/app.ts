@@ -7,7 +7,6 @@ interface Product {
 
 let cart: Product[] = [];
 
-// Fetch products from API
 async function fetchProducts(): Promise<void> {
   try {
     const response = await fetch("https://fakestoreapi.com/products");
@@ -18,7 +17,6 @@ async function fetchProducts(): Promise<void> {
   }
 }
 
-// Display products on the page
 function displayProducts(products: Product[]): void {
   const productsContainer = document.querySelector(".product-grid")!;
   productsContainer.innerHTML = "";
@@ -35,7 +33,6 @@ function displayProducts(products: Product[]): void {
     productsContainer.appendChild(div);
   });
 
-  // Attach event listeners to buttons
   document.querySelectorAll(".add-to-cart").forEach((button) => {
     button.addEventListener("click", () => {
       const productId = parseInt(
@@ -46,7 +43,6 @@ function displayProducts(products: Product[]): void {
   });
 }
 
-// Add product to cart
 async function addToCart(productId: number): Promise<void> {
   try {
     const response = await fetch(
@@ -60,13 +56,11 @@ async function addToCart(productId: number): Promise<void> {
   }
 }
 
-// Remove product from cart
 function removeFromCart(index: number): void {
   cart.splice(index, 1);
   updateCart();
 }
 
-// Update the cart display
 function updateCart(): void {
   const cartContainer = document.querySelector(".cart-items")!;
   const totalPriceElement = document.querySelector(".total_price")!;
@@ -89,7 +83,6 @@ function updateCart(): void {
 
   totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
 
-  // Attach event listeners to remove buttons
   document.querySelectorAll(".remove-from-cart").forEach((button) => {
     button.addEventListener("click", () => {
       const index = parseInt(
@@ -100,7 +93,6 @@ function updateCart(): void {
   });
 }
 
-// Sort functions
 const sortLowToHigh = (): void => {
   const productsContainer = document.querySelector(".product-grid")!;
   const sortedProducts = Array.from(
@@ -129,7 +121,6 @@ const sortHighToLow = (): void => {
   sortedProducts.forEach((product) => productsContainer.appendChild(product));
 };
 
-// Event Listeners
 window.addEventListener("DOMContentLoaded", () => {
   fetchProducts();
   document.getElementById("sortlth")!.addEventListener("click", sortLowToHigh);
