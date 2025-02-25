@@ -1,50 +1,18 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# **E-Commerce App (React + Fake Store API)**  
 
-Currently, two official plugins are available:
+- **Fake Store API** → Provides product data for the store.  
+- **Axios** → Handles API requests for fetching, adding, and updating products.  
+- **React Router DOM** → Manages navigation between pages (Cart, Home, Search, Login, Product Details).  
+- **React Query** → Optimizes fetching and caching of individual product data.  
+- **React Context API** → Manages authentication and cart state globally.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Search Query with Routes** → Uses `useLocation` & `URLSearchParams` to filter products dynamically based on search input.  
+2. **Add to Cart** → Stores selected products in a global cart state using `useContext`.  
+3. **Delete from Cart** → Allows admin to remove items from the cart, updating the global cart state.  
+4. **Separate Login for Admin** → Uses `AuthContext` to differentiate between admin and regular users.  
+5. **Admin Can Add & Edit Products** → Admins can create new products (stored in state) and modify existing ones.  
+6. **Load & View Individual Products** → Uses **React Query** (`useQuery`) to efficiently fetch and cache product details.  
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+https://github.com/user-attachments/assets/c39f3c08-d82a-4b3f-8775-0a10de6ff25d
