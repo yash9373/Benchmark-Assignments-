@@ -1,5 +1,7 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 import {
   Navbar,
   Nav,
@@ -9,11 +11,11 @@ import {
   Button,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AddProductButton from "./AddProductButton";
-import { ProductProvider } from "../context/productContext";
+import { Navigate } from "react-router-dom";
 
 const CustomNavbar: React.FC = () => {
   const { state, logOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" className="px-3">
@@ -36,13 +38,21 @@ const CustomNavbar: React.FC = () => {
           {/* <Button variant="light" className="me-2">
             Login
           </Button> */}
-          <ProductProvider>
-            <AddProductButton />
-          </ProductProvider>
 
           {"           |   |"}
-          <Button variant="outline-light" className="me-2">
+          <Button
+            variant="outline-light"
+            className="me-2"
+            onClick={() => navigate("/cartPage")}
+          >
             Cart 🛒
+          </Button>
+          <Button
+            variant="outline-light"
+            className="me-2"
+            onClick={() => navigate("/adminDashBoard")}
+          >
+            Home
           </Button>
           <Button variant="light" onClick={logOut}>
             Log Out

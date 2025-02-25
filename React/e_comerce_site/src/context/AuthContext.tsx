@@ -1,31 +1,27 @@
-import {
-  createContext,
-  ReactNode,
-  useReducer,
-  useState,
-  useContext,
-} from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { AdminDashBoard } from "../pages/adminDashBoard";
+import { createContext, ReactNode, useReducer, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 interface User {
   userName: string;
   role: "admin" | "user";
   token: string;
+  cart?: any[]; // Fixed cart type
 }
 
-interface authState {
+interface AuthState {
   user: User | null;
 }
 
-type contextType = {
-  state: authState;
-  logIn: (username: string, password: string) => Promise<void>; //return type is promise because we are using async function
+type ContextType = {
+  state: AuthState;
+  logIn: (username: string, password: string) => Promise<void>;
   logOut: () => void;
+  addToCart: (product: any) => void;
 };
 
-type authAction = { type: "logIn"; payload: User } | { type: "logOut" };
+type AuthAction = { type: "logIn"; payload: User } | { type: "logOut" };
 
-const authReducer = (state: authState, action: authAction): authState => {
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case "logIn":
       return { user: action.payload };
@@ -35,19 +31,20 @@ const authReducer = (state: authState, action: authAction): authState => {
       return state;
   }
 };
-const authcontext = createContext<contextType | undefined>(undefined); // |undefined beacuse we are not providing any value to the context yet
+
+const AuthContext = createContext<ContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, { user: null });
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const logIn = async (username: string, password: string) => {
     let role: "admin" | "user" = "user";
     if (username === "admin" && password === "admin") {
       role = "admin";
-      const userData: User = { userName: username, role, token: "" };
+      const userData: User = { userName: username, role, token: "", cart: [] };
       dispatch({ type: "logIn", payload: userData });
-      Navigate("/AdminDashBoard");
+      navigate("/AdminDashBoard");
     } else {
       try {
         const response = await fetch("https://fakestoreapi.com/auth/login", {
@@ -55,32 +52,53 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password }),
         });
-        console.log(response);
-        if (!response.ok) throw new Error("Invalid credentials");
-        const data = await response.json();
 
-        const userData: User = { userName: username, role, token: data.token };
+        if (!response.ok) {
+          alert("Invalid credentials");
+          return;
+        }
+
+        const data = await response.json();
+        const userData: User = {
+          userName: username,
+          role,
+          token: data.token,
+          cart: [],
+        };
         dispatch({ type: "logIn", payload: userData });
-        Navigate("/Dashboard");
+        navigate("/Dashboard");
       } catch (err) {
-        throw new Error("Login Failed Please try again");
-        alert("Login Failed Please try again");
+        console.error("Login Failed, please try again");
+        alert("Login Failed, please try again");
       }
     }
   };
+
   const logOut = () => {
     dispatch({ type: "logOut" });
-    Navigate("/");
+    navigate("/");
+  };
+
+  const addToCart = (product: any) => {
+    const user = state.user;
+
+    if (!user) return;
+
+    const updatedCart = user.cart ? [...user.cart, product] : [product];
+
+    const updatedUser = { ...user, cart: updatedCart };
+    dispatch({ type: "logIn", payload: updatedUser });
   };
 
   return (
-    <authcontext.Provider value={{ state, logIn, logOut }}>
+    <AuthContext.Provider value={{ state, logIn, logOut, addToCart }}>
       {children}
-    </authcontext.Provider>
+    </AuthContext.Provider>
   );
 };
+
 export const useAuth = () => {
-  const context = useContext(authcontext);
+  const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };

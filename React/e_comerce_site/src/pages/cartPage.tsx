@@ -1,13 +1,14 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
 import CustomNavbar from "../components/Navbar";
-import Products from "./loadProducts";
-export const AdminDashBoard = () => {
+import Cart from "../components/cart";
+const cartPage = () => {
   const { logOut } = useAuth();
   return (
     <div>
       <CustomNavbar />
-      <Products />
+      <Cart />
     </div>
   );
 };
+export default cartPage;

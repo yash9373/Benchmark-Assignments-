@@ -4,14 +4,18 @@ import SignInPage from "../pages/SignInPage";
 import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { AdminDashBoard } from "../pages/adminDashBoard";
-import { ProductProvider } from "../context/productContext";
+import CartPage from "../pages/cartPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ProductIPage from "../pages/productIndividual";
 const AppRoutes = () => {
   return (
     <Router>
-      <AuthProvider>
-        <ProductProvider>
+      <QueryClientProvider client={new QueryClient()}>
+        <AuthProvider>
           <Routes>
             <Route path="/" element={<SignInPage />} />
+            <Route path="/cartPage" element={<CartPage />} />
+            <Route path="/productPage/:id" element={<ProductIPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route
               path="/adminDashBoard"
@@ -26,13 +30,13 @@ const AppRoutes = () => {
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <AdminDashBoard />
                 </ProtectedRoute>
               }
             />
           </Routes>
-        </ProductProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </Router>
   );
 };
