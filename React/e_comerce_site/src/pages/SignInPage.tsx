@@ -1,38 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { Form, Button, Container, Alert, Card } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
-import context from "react-bootstrap/esm/AccordionContext";
 
-const singInPage = () => {
-  const [userName, setUserName] = React.useState("");
-  const [userpass, setUserPass] = React.useState("");
-  const [error, setError] = React.useState("");
+const SignInPage = () => {
+  const [error, setError] = useState("");
   const { logIn } = useAuth();
-
-  const hanldelogIn = async () => {
+  const [userName, setUserName] = useState("");
+  const [userPass, setUserPass] = useState("");
+  const handleLogIn = async () => {
     try {
-      await logIn(userName, userpass);
-    } catch (error) {
-      console.log(error);
+      await logIn(userName, userPass);
+    } catch (err) {
+      setError("Invalid credentials. Please try again.");
     }
   };
+
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p>{error}</p>}
-      <input
-        type="text"
-        placeholder="Username"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={userpass}
-        onChange={(e) => setUserPass(e.target.value)}
-      />
-      <button onClick={hanldelogIn}>Login</button>
-    </div>
+    <Container className="d-flex justify-content-center align-items-center vh-100">
+      <Card style={{ width: "400px" }} className="p-4 shadow">
+        <Card.Body>
+          <h2 className="text-center">Login</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Enter password"
+                value={userPass}
+                onChange={(e) => setUserPass(e.target.value)}
+              />
+            </Form.Group>
+            <Button variant="primary" className="w-100" onClick={handleLogIn}>
+              Login
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
-export default singInPage;
+
+export default SignInPage;

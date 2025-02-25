@@ -5,7 +5,7 @@ interface User {
   userName: string;
   role: "admin" | "user";
   token: string;
-  cart?: any[]; // Fixed cart type
+  cart?: any[];
 }
 
 interface AuthState {

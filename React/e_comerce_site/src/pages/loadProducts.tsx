@@ -9,8 +9,9 @@ import {
   Form,
 } from "react-bootstrap";
 import axios from "axios";
-
 import { useAuth } from "../context/AuthContext";
+import { useNavigate, useLocation } from "react-router-dom";
+
 type Product = {
   id: number;
   title: string;
@@ -19,28 +20,45 @@ type Product = {
   description: string;
   category: string;
 };
-import { useNavigate } from "react-router-dom";
 
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [show, setShow] = useState(false);
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [price, setPrice] = useState("");
+
+  const location = useLocation();
   const navigate = useNavigate();
+  const AuthContext = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("https://fakestoreapi.com/products");
         setProducts(response.data);
+        setFilteredProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const searchQuery = queryParams.get("search")?.toLowerCase() || "";
+
+    if (searchQuery) {
+      const filtered = products.filter((product) =>
+        product.title.toLowerCase().includes(searchQuery)
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [location.search, products]);
 
   const addProduct = async (
     title: string,
@@ -58,11 +76,9 @@ const Products: React.FC = () => {
       };
 
       await axios.post("https://fakestoreapi.com/products", newProduct);
-      setProducts((prevProducts) => [...prevProducts, newProduct]);
+      setProducts((prev) => [...prev, newProduct]);
+      setFilteredProducts((prev) => [...prev, newProduct]);
       handleClose();
-      setProductName("");
-      setProductDescription("");
-      setPrice("");
     } catch (error) {
       console.error("Error adding product:", error);
     }
@@ -71,17 +87,18 @@ const Products: React.FC = () => {
   const deleteProduct = async (id: number) => {
     try {
       await axios.delete(`https://fakestoreapi.com/products/${id}`);
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product.id !== id)
+      setProducts((prev) => prev.filter((product) => product.id !== id));
+      setFilteredProducts((prev) =>
+        prev.filter((product) => product.id !== id)
       );
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
-  const AuthContext = useAuth();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   return (
     <Container className="mt-4">
       {AuthContext.state.user?.role === "admin" && (
@@ -145,11 +162,12 @@ const Products: React.FC = () => {
           </Form>
         </Modal.Body>
       </Modal>
+
       <Row>
-        {products.length === 0 ? (
-          <p>No products available</p>
+        {filteredProducts.length === 0 ? (
+          <p>No products found.</p>
         ) : (
-          products.map((product) => (
+          filteredProducts.map((product) => (
             <Col key={product.id} md={4} className="mb-4">
               <Card>
                 <Card.Img
@@ -168,7 +186,7 @@ const Products: React.FC = () => {
                     onClick={() => navigate(`/productPage/${product.id}`)}
                   >
                     View
-                  </Button>
+                  </Button>{" "}
                   {AuthContext.state.user?.role === "admin" && (
                     <Button
                       variant="danger"
@@ -176,7 +194,7 @@ const Products: React.FC = () => {
                     >
                       ⚔ Delete
                     </Button>
-                  )}{" "}
+                  )}
                   <Button
                     variant="primary"
                     onClick={() => AuthContext.addToCart(product)}
