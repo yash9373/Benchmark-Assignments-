@@ -10,7 +10,6 @@ import {
   Button,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 const CustomNavbar: React.FC = () => {
   const { state, logOut } = useAuth();
   const navigate = useNavigate();

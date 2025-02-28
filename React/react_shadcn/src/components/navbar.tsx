@@ -10,7 +10,14 @@ const Navbar = () => {
         <Button variant="ghost" onClick={() => navigate("/home")}>
           Home
         </Button>
-        <Button variant="ghost">About</Button>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            navigate("/cart");
+          }}
+        >
+          Cart
+        </Button>
         <Button variant="ghost">Contact</Button>
       </div>
     </nav>

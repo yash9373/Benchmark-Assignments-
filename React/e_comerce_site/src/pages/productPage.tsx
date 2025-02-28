@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
-
+import CustomNavbar from "../components/Navbar";
 const fetchProduct = async (id: string | undefined) => {
   if (!id) throw new Error("Invalid product ID");
   const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
