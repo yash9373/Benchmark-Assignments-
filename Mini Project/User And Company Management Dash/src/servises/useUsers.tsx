@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../servises/api";
-import useFetchUsers from "../stores/userStore";
+import useUserStore from "../stores/userStore";
+
 const fetchAll = async () => {
   const [rolesRes, usersRes] = await Promise.all([
     api.get("/roles"),
@@ -22,15 +23,14 @@ const fetchAll = async () => {
 };
 
 export const useUsers = () => {
-  const { users, setUsers } = useFetchUsers();
-
+  const { users, setUsers } = useUserStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["usersWithRoles"],
     queryFn: fetchAll,
   });
 
   useEffect(() => {
-    if (data?.users) {
+    if (data?.users && users.length === 0) {
       setUsers(data.users);
     }
   }, [data, setUsers]);

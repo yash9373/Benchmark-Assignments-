@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { useQuery } from "@tanstack/react-query";
-import api from "../servises/api";
+import { persist, PersistOptions } from "zustand/middleware";
 
 interface CompanyState {
   companies: any[];
@@ -8,13 +7,18 @@ interface CompanyState {
   addCompany: (company: any) => void;
 }
 
-const useCompanyStore = create<CompanyState>((set) => ({
-  companies: [],
+const useCompanyStore = create<CompanyState>()(
+  persist(
+    (set) => ({
+      companies: [],
 
-  setCompanies: (companies) => set({ companies }),
+      setCompanies: (companies) => set({ companies }),
 
-  addCompany: (company) =>
-    set((state) => ({ companies: [...state.companies, company] })),
-}));
+      addCompany: (company) =>
+        set((state) => ({ companies: [...state.companies, company] })),
+    }),
+    { name: "company-storage" } as PersistOptions<CompanyState>
+  )
+);
 
 export default useCompanyStore;

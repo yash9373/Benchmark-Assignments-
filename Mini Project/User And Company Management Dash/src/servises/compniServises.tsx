@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../servises/api";
 import useCompanyStore from "../stores/companieStore";
+
 const fetchAll = async () => {
   const response = await api.get("/companies");
-  return response.data;
+  return response;
 };
 
 export const useCompanies = () => {
@@ -16,11 +17,11 @@ export const useCompanies = () => {
   });
 
   useEffect(() => {
-    if (data) {
-      setCompanies(data);
+    if (data?.data && companies.length === 0) {
+      setCompanies(data.data);
     }
   }, [data, setCompanies]);
-  console.log(data);
-
+  console.log("this is the data " + data);
+  console.log("this is the como" + companies);
   return { companies, isLoading, error };
 };

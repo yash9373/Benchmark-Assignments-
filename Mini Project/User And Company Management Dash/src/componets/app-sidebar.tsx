@@ -27,6 +27,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const data = {
   user: {
@@ -112,6 +114,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const navigate = useNavigate();
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -135,6 +138,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         {/* <NavProjects projects={data.projects} /> */}
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+        <Button
+          className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
+          onClick={() => navigate("/addUser")}
+        >
+          + Add User
+        </Button>
+        <Button
+          className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
+          onClick={() => navigate("/addComp")}
+        >
+          + Add Compnie
+        </Button>
+        <Button
+          className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
+          onClick={() => navigate("/addPost")}
+        >
+          + Add Post
+        </Button>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

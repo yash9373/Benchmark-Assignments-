@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface PostState {
   posts: any[];
@@ -6,10 +7,16 @@ interface PostState {
   addPost: (post: any) => void;
 }
 
-const usePostStore = create<PostState>((set) => ({
-  posts: [],
-  setPosts: (posts) => set({ posts }),
-  addPost: (post) => set((state) => ({ posts: [...state.posts, post] })),
-}));
+const usePostStore = create<PostState>()(
+  persist(
+    (set) => ({
+      posts: [],
+      setPosts: (posts: any[]) => set({ posts }),
+      addPost: (post: any) =>
+        set((state) => ({ posts: [...state.posts, post] })),
+    }),
+    { name: "post-storage" }
+  )
+);
 
 export default usePostStore;

@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { useQuery } from "@tanstack/react-query";
-import api from "../servises/api";
+import { persist } from "zustand/middleware";
 
 interface UserState {
   users: any[];
@@ -8,10 +7,15 @@ interface UserState {
   addUser: (user: any) => void;
 }
 
-const useUserStore = create<UserState>((set) => ({
-  users: [],
-  setUsers: (users) => set({ users }),
-  addUser: (user) => set((state) => ({ users: [...state.users, user] })), // ✅ Add user
-}));
+const useUserStore = create<UserState>()(
+  persist(
+    (set) => ({
+      users: [],
+      setUsers: (users) => set({ users }),
+      addUser: (user) => set((state) => ({ users: [...state.users, user] })), // ✅ Add user
+    }),
+    { name: "user-storage" }
+  )
+);
 
 export default useUserStore;

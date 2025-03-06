@@ -54,8 +54,8 @@ export const usePost = () => {
   });
 
   useEffect(() => {
-    if (data?.posts && data.posts.length > 0) {
-      setPosts(data.posts);
+    if (data && posts.length === 0) {
+      setPosts(data.posts); // ✅ Only sets posts if Zustand is empty (prevents overwriting)
     }
   }, [data, setPosts]);
 

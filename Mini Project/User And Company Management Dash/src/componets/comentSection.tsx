@@ -8,7 +8,7 @@ import { Send } from "lucide-react";
 interface Comment {
   id: string;
   userAvatar?: string;
-  username?: string;
+  name?: string;
   body: string;
 }
 
@@ -32,12 +32,12 @@ export default function CommentSection({ comments = [] }: CommentSectionProps) {
                   src={comment.userAvatar || "/default-avatar.png"}
                 />
                 <AvatarFallback>
-                  {comment.username?.charAt(0) || "U"}
+                  {comment.name?.charAt(0) || "U"}
                 </AvatarFallback>
               </Avatar>
               <div>
                 <p className="text-sm font-medium text-left">
-                  {comment.username || "Unknown User"}
+                  {comment.name || "Unknown User"}
                 </p>
                 <p className="text-gray-600 text-sm text-left">
                   {comment.body}
@@ -49,14 +49,6 @@ export default function CommentSection({ comments = [] }: CommentSectionProps) {
           <p className="text-gray-500 text-sm text-center">No comments yet.</p>
         )}
       </ScrollArea>
-
-      {/* Comment Input */}
-      <div className="flex items-center space-x-2 p-2">
-        <Input placeholder="Add a comment..." className="flex-1" />
-        <Button variant="ghost">
-          <Send className="w-5 h-5 text-blue-500" />
-        </Button>
-      </div>
     </div>
   );
 }

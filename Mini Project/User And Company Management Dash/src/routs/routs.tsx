@@ -6,6 +6,9 @@ import Home from "@/pages/home";
 import User from "@/pages/user";
 import Companies from "@/pages/companies";
 import Posts from "@/pages/posts";
+import AddCompanies from "@/componets/addComp";
+import AddPost from "@/componets/addPost";
+import AddUser from "@/componets/addUser";
 function Routs() {
   return (
     <Routes>
@@ -17,6 +20,9 @@ function Routs() {
         <Route path="/user" element={<User />} />
         <Route path="/Componies" element={<Companies />} />
         <Route path="/posts" element={<Posts />} />
+        <Route path="/addComp" element={<AddCompanies />} />
+        <Route path="/addPost" element={<AddPost />} />
+        <Route path="/addUser" element={<AddUser />} />
       </Route>
     </Routes>
   );
