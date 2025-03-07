@@ -1,22 +1,9 @@
 "use client";
 
 import * as React from "react";
-import {
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+import { BookOpen, Bot, Command, PieChart, Settings2 } from "lucide-react";
 
 import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-projects";
-import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
 import {
   Sidebar,
@@ -29,92 +16,29 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: PieChart,
-
-      isActive: true,
-      items: [],
-    },
-    {
-      title: "Users",
-      url: "/user",
-      icon: Bot,
-      items: [],
-    },
-    {
-      title: "Componies",
-      url: "/Componies",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Posts",
-      url: "/posts",
-      icon: Settings2,
-      items: [],
-    },
-    //   ],
-    //   navSecondary: [
-    //     {
-    //       title: "Support",
-    //       url: "#",
-    //       icon: LifeBuoy,
-    //     },
-    //     {
-    //       title: "Feedback",
-    //       url: "#",
-    //       icon: Send,
-    //     },
-    // //   ],
-    //   projects: [
-    //     {
-    //       name: "Design Engineering",
-    //       url: "#",
-    //       icon: Frame,
-    //     },
-    //     {
-    //       name: "Sales & Marketing",
-    //       url: "#",
-    //       icon: PieChart,
-    //     },
-    //     {
-    //       name: "Travel",
-    //       url: "#",
-    //       icon: Map,
-    //     },
-    //   ],
-  ],
-};
+import { useUsers } from "../servises/useUsers";
+import { useAuth } from "@/context/authContext";
+import User from "@/pages/user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
+  const { user: loggedInUser } = useAuth();
+  const { users, isLoading, error } = useUsers();
+  console.log("this is the users", users);
+  console.log("this is the users login", loggedInUser);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching users</div>;
+  const userMatched = users.find(
+    (u) => u.name.split(" ").join("") === loggedInUser
+  );
+  console.log("this is the role", userMatched.role.name);
+  const currentUser = {
+    name: loggedInUser || undefined,
+    email: "user@email.com",
+    avatar: "/default-avatar.png",
+    role: userMatched.role.name || undefined,
+  };
+  console.log("this is the all user", users);
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -135,30 +59,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
-        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
-        <Button
-          className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
-          onClick={() => navigate("/addUser")}
-        >
-          + Add User
-        </Button>
-        <Button
-          className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
-          onClick={() => navigate("/addComp")}
-        >
-          + Add Compnie
-        </Button>
-        <Button
-          className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
-          onClick={() => navigate("/addPost")}
-        >
-          + Add Post
-        </Button>
+        <NavMain
+          items={[
+            {
+              title: "Dashboard",
+              url: "/dashboard",
+              icon: PieChart,
+              isActive: true,
+              items: [],
+            },
+            { title: "Users", url: "/user", icon: Bot, items: [] },
+            {
+              title: "Companies",
+              url: "/companies",
+              icon: BookOpen,
+              items: [],
+            },
+            { title: "Posts", url: "/posts", icon: Settings2, items: [] },
+          ]}
+        />
+
+        {currentUser.role === "Admin" && (
+          <div className="flex flex-col gap-2 p-4">
+            <Button
+              className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
+              onClick={() => navigate("/addUser")}
+            >
+              + Add User
+            </Button>
+            <Button
+              className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
+              onClick={() => navigate("/addComp")}
+            >
+              + Add Company
+            </Button>
+            <Button
+              className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
+              onClick={() => navigate("/addPost")}
+            >
+              + Add Post
+            </Button>
+          </div>
+        )}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={currentUser} />
       </SidebarFooter>
     </Sidebar>
   );

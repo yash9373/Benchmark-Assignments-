@@ -1,5 +1,6 @@
 import axios from "axios";
 import api from "./api";
+import { useAuth } from "@/context/authContext";
 type FormFields = {
   username: string;
   password: string;
@@ -9,6 +10,7 @@ type AuthResponse = {
   success: boolean;
   message: string;
   token?: string;
+  username?: string;
 };
 
 const AuthServices = async (formFields: FormFields): Promise<AuthResponse> => {
@@ -17,12 +19,14 @@ const AuthServices = async (formFields: FormFields): Promise<AuthResponse> => {
       username: formFields.username,
       password: formFields.password,
     });
+    const result = response.data;
 
-    if (response.data) {
+    if (response.status === 200) {
       return {
-        success: response.data.success,
+        success: true,
         message: response.data.message || "Login successful",
         token: response.data.token || "",
+        username: formFields.username || "",
       };
     }
 
@@ -50,7 +54,6 @@ const AuthServices = async (formFields: FormFields): Promise<AuthResponse> => {
       }
     }
 
-    // Handle network errors
     return {
       success: false,
       message: "Network error. Please check your internet connection.",
