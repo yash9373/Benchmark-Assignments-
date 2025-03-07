@@ -5,8 +5,11 @@ import "./index.css";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import Route from "./routs/routs";
+import { AuthProvider } from "./context/authContext";
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Route />
-  </BrowserRouter>
+  <AuthProvider>
+    <BrowserRouter>
+      <Route />
+    </BrowserRouter>
+  </AuthProvider>
 );
