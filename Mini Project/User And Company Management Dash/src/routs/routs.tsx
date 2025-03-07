@@ -18,7 +18,7 @@ function Routs() {
         <Route index element={<DashBoard />} />{" "}
         <Route path="/dashboard" element={<DashBoard />} />{" "}
         <Route path="/user" element={<User />} />
-        <Route path="/Componies" element={<Companies />} />
+        <Route path="/companies" element={<Companies />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/addComp" element={<AddCompanies />} />
         <Route path="/addPost" element={<AddPost />} />

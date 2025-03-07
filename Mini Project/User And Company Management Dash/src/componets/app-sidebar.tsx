@@ -16,25 +16,29 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useUsers } from "../servises/useUsers"; // ✅ Import useUsers hook
-import { useAuth } from "@/context/authContext"; // ✅ Import Auth Context
+import { useUsers } from "../servises/useUsers";
+import { useAuth } from "@/context/authContext";
+import User from "@/pages/user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
-  const { user: loggedInUser } = useAuth(); // ✅ Get the logged-in user
-  const { users, isLoading, error } = useUsers(); // ✅ Fetch all users
+  const { user: loggedInUser } = useAuth();
+  const { users, isLoading, error } = useUsers();
   console.log("this is the users", users);
   console.log("this is the users login", loggedInUser);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching users</div>;
-
-  const currentUser = users.find((u) => u.name === loggedInUser) || {
-    name: "Guest",
+  const userMatched = users.find(
+    (u) => u.name.split(" ").join("") === loggedInUser
+  );
+  console.log("this is the role", userMatched.role.name);
+  const currentUser = {
+    name: loggedInUser || undefined,
     email: "user@email.com",
     avatar: "/default-avatar.png",
-    role: "user",
+    role: userMatched.role.name || undefined,
   };
-
+  console.log("this is the all user", users);
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -75,8 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           ]}
         />
 
-        {/* Show admin buttons only */}
-        {currentUser.role === "admin" && (
+        {currentUser.role === "Admin" && (
           <div className="flex flex-col gap-2 p-4">
             <Button
               className="bg-green-500 text-gray-800 hover:bg-gray-200 cursor-pointer"
